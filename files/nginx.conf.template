@@ -1,0 +1,67 @@
+worker_processes  auto;
+
+error_log /dev/stderr info;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    sendfile        on;
+    keepalive_timeout  65;
+
+    access_log /dev/stdout;
+
+
+    # HTTP server to terminate TLS for auth requests
+    server {
+        listen 127.0.0.1:9000;
+
+        location / {
+            proxy_pass $AUTH_HTTP_URL;
+        }
+    }
+}
+
+mail {
+    proxy on;
+    xclient off;
+
+    # error_log /var/log/nginx/error_mail.log debug;
+
+    proxy_smtp_auth on;
+    proxy_protocol off;
+    proxy_pass_error_message on;
+
+
+    auth_http 127.0.0.1:9000;
+    auth_http_header X-ConnectivitySDK-Auth-Key "$AUTH_HTTP_KEY";
+
+
+    #                       25Mb
+    smtp_capabilities "SIZE 26214400" ENHANCEDSTATUSCODES 8BITMIME DSN;
+    smtp_auth login plain xoauth2;
+
+
+    # ssl_certificate /etc/nginx/to20500101.crt;
+    # ssl_certificate_key /etc/nginx/to20500101.key;
+    # ssl_protocols       TLSv1.2 TLSv1.3;
+    # ssl_ciphers         HIGH:!aNULL:!MD5;
+    # ssl_session_cache   shared:SSL:10m;
+    # ssl_session_timeout 10m;
+
+    server {
+        listen     $MAIL_SERVER_PORT;
+        server_name $MAILER_SERVER_NAME;
+
+        protocol smtp;
+
+        # smtp_auth none;
+        # starttls on;
+    }
+}
