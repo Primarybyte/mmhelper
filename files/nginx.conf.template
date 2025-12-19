@@ -1,12 +1,10 @@
 worker_processes  auto;
 
-error_log /dev/stderr info;
-
+error_log /dev/stderr $MAIL_SERVER_LOG_LVL;
 
 events {
     worker_connections  1024;
 }
-
 
 http {
     include       mime.types;
@@ -48,20 +46,26 @@ mail {
     smtp_auth login plain xoauth2;
 
 
-    # ssl_certificate /etc/nginx/to20500101.crt;
-    # ssl_certificate_key /etc/nginx/to20500101.key;
-    # ssl_protocols       TLSv1.2 TLSv1.3;
-    # ssl_ciphers         HIGH:!aNULL:!MD5;
-    # ssl_session_cache   shared:SSL:10m;
-    # ssl_session_timeout 10m;
 
     server {
         listen     $MAIL_SERVER_PORT;
+        protocol smtp;
+        server_name $MAILER_SERVER_NAME;
+    }
+
+    server {
+        listen     $MAIL_SERVER_SSL_PORT ssl;
+        protocol smtp;
         server_name $MAILER_SERVER_NAME;
 
-        protocol smtp;
-
+        ssl_certificate $MAIL_SERVER_SSL_CERT;
+        ssl_certificate_key $MAIL_SERVER_SSL_KEY;
+        # ssl_protocols       TLSv1.2 TLSv1.3;
+        # ssl_ciphers         HIGH:!aNULL:!MD5;
+        # ssl_session_cache   shared:SSL:10m;
+        # ssl_session_timeout 10m;
         # smtp_auth none;
         # starttls on;
     }
+
 }

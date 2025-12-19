@@ -24,6 +24,5 @@ docker run -d \
   -e AUTH_HTTP_URL="https://api.example.com:443/authorize" \
   -e AUTH_HTTP_KEY="key_from_app" \
   -e MAILER_SERVER_NAME="mailer-a-smtp.localhost" \
-  -e MAIL_SERVER_PORT=25 \
 freenginx-mmhelper:1.28 /bin/bash
 ```
