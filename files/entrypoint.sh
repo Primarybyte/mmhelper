@@ -7,19 +7,17 @@ set -e
 : "${AUTH_HTTP_KEY:=changeme}"
 : "${MAIL_SERVER_LOG_LVL:=info}"
 : "${MAIL_SERVER_NAME:=localhost}"
-: "${MAIL_SERVER_PORT:=25}"
-: "${MAIL_SERVER_SSL_PORT:=465}"
 : "${MAIL_SERVER_SSL_CERT:=/etc/nginx/to20500101.crt}"
 : "${MAIL_SERVER_SSL_KEY:=/etc/nginx/to20500101.key}"
 
 
-export AUTH_HTTP_URL AUTH_HTTP_KEY MAIL_SERVER_LOG_LVL MAILER_SERVER_NAME MAIL_SERVER_PORT MAIL_SERVER_SSL_PORT MAIL_SERVER_SSL_CERT MAIL_SERVER_SSL_KEY
+export AUTH_HTTP_URL AUTH_HTTP_KEY MAIL_SERVER_LOG_LVL MAILER_SERVER_NAME MAIL_SERVER_SSL_CERT MAIL_SERVER_SSL_KEY
 
 
 # Check if the NGINX config already exists
 if [ -f /etc/nginx/nginx.conf.template ]; then
     echo "Generating nginx.conf from template..."
-    envsubst '$AUTH_HTTP_URL $AUTH_HTTP_KEY $MAIL_SERVER_LOG_LVL $MAILER_SERVER_NAME $MAIL_SERVER_PORT $MAIL_SERVER_SSL_PORT $MAIL_SERVER_SSL_CERT $MAIL_SERVER_SSL_KEY' \
+    envsubst '$AUTH_HTTP_URL $AUTH_HTTP_KEY $MAIL_SERVER_LOG_LVL $MAILER_SERVER_NAME $MAIL_SERVER_SSL_CERT $MAIL_SERVER_SSL_KEY' \
       < /etc/nginx/nginx.conf.template \
       > /etc/nginx/nginx.conf
 else

@@ -79,7 +79,7 @@ COPY --from=builder /usr/bin/envsubst /usr/bin/envsubst
 # Create required runtime directories
 RUN mkdir -p /var/log/nginx /var/run /var/mail
 
-EXPOSE 25 2525
+EXPOSE 25 465 587
 
 STOPSIGNAL SIGQUIT
 
@@ -99,6 +99,3 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 # Optional: default CMD can still provide arguments to the entrypoint
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
 # CMD []
-
-
-

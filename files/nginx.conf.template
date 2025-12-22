@@ -30,42 +30,61 @@ mail {
     proxy on;
     xclient off;
 
-    # error_log /var/log/nginx/error_mail.log debug;
-
     proxy_smtp_auth on;
     proxy_protocol off;
     proxy_pass_error_message on;
 
-
     auth_http 127.0.0.1:9000;
     auth_http_header X-ConnectivitySDK-Auth-Key "$AUTH_HTTP_KEY";
-
 
     #                       25Mb
     smtp_capabilities "SIZE 26214400" ENHANCEDSTATUSCODES 8BITMIME DSN;
     smtp_auth login plain xoauth2;
 
-
-
+    ##
+    ## SMTP – Port 25 (Plain SMTP)
+    ##
     server {
-        listen     $MAIL_SERVER_PORT;
+        listen     25;
         protocol smtp;
         server_name $MAILER_SERVER_NAME;
     }
 
+    ##
+    ## SMTPS – Port 465 (Implicit TLS)
+    ##
     server {
-        listen     $MAIL_SERVER_SSL_PORT ssl;
+        listen     465 ssl;
         protocol smtp;
         server_name $MAILER_SERVER_NAME;
 
         ssl_certificate $MAIL_SERVER_SSL_CERT;
         ssl_certificate_key $MAIL_SERVER_SSL_KEY;
+
         # ssl_protocols       TLSv1.2 TLSv1.3;
         # ssl_ciphers         HIGH:!aNULL:!MD5;
         # ssl_session_cache   shared:SSL:10m;
         # ssl_session_timeout 10m;
         # smtp_auth none;
-        # starttls on;
+
     }
 
+    ##
+    ## SMTP Submission – Port 587 (STARTTLS)
+    ##
+    server {
+        listen     587;
+        protocol   smtp;
+        server_name $MAILER_SERVER_NAME;
+
+        starttls on;
+
+        ssl_certificate     $MAIL_SERVER_SSL_CERT;
+        ssl_certificate_key $MAIL_SERVER_SSL_KEY;
+
+        # ssl_protocols       TLSv1.2 TLSv1.3;
+        # ssl_ciphers         HIGH:!aNULL:!MD5;
+        # ssl_session_cache   shared:SSL:10m;
+        # ssl_session_timeout 10m;
+    }
 }
