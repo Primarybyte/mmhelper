@@ -56,6 +56,7 @@ mail {
     server {
         listen     $MAIL_SERVER_SSL_PORT ssl;
         protocol smtp;
+        proxy_ssl on;
         server_name $MAILER_SERVER_NAME;
 
         ssl_certificate $MAIL_SERVER_SSL_CERT;
