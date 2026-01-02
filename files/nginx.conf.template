@@ -15,7 +15,6 @@ http {
 
     access_log /dev/stdout;
 
-
     # HTTP server to terminate TLS for auth requests
     server {
         listen 127.0.0.1:9000;
@@ -61,10 +60,13 @@ mail {
         ssl_certificate $MAIL_SERVER_SSL_CERT;
         ssl_certificate_key $MAIL_SERVER_SSL_KEY;
 
-        # ssl_protocols       TLSv1.2 TLSv1.3;
-        # ssl_ciphers         HIGH:!aNULL:!MD5;
-        # ssl_session_cache   shared:SSL:10m;
-        # ssl_session_timeout 10m;
+        # proxy_ssl_session_reuse off;
+
+        proxy_ssl on;
+        ssl_protocols       TLSv1.2 TLSv1.3;
+        ssl_ciphers         HIGH:!aNULL:!MD5;
+        ssl_session_cache   shared:SSL:10m;
+        ssl_session_timeout 10m;
         # smtp_auth none;
 
     }
