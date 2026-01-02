@@ -62,10 +62,10 @@ mail {
 
         # proxy_ssl_session_reuse off;
 
-        ssl_protocols       TLSv1.2 TLSv1.3;
-        ssl_ciphers         HIGH:!aNULL:!MD5;
-        ssl_session_cache   shared:SSL:10m;
-        ssl_session_timeout 10m;
+        # ssl_protocols       TLSv1.2 TLSv1.3;
+        # ssl_ciphers         HIGH:!aNULL:!MD5;
+        # ssl_session_cache   shared:SSL:10m;
+        # ssl_session_timeout 10m;
         # smtp_auth none;
 
     }
