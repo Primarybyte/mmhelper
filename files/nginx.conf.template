@@ -46,6 +46,7 @@ mail {
     server {
         listen     25;
         protocol smtp;
+        xclient off;
         server_name $MAILER_SERVER_NAME;
     }
 
@@ -55,6 +56,7 @@ mail {
     server {
         listen     465 ssl;
         protocol smtp;
+        xclient off;
         server_name $MAILER_SERVER_NAME;
 
         ssl_certificate $MAIL_SERVER_SSL_CERT;
@@ -74,6 +76,7 @@ mail {
     server {
         listen     587;
         protocol   smtp;
+        xclient off;
         server_name $MAILER_SERVER_NAME;
 
         starttls on;
